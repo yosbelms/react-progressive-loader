@@ -1,0 +1,42 @@
+{
+  "name": "react-progressive-loader",
+  "version": "0.7.0",
+  "description": "Lazy load Images, React components, and get code splitting for free",
+  "repository": "https://github.com/yosbelms/react-progressive-loader.git",
+  "main": "lib/index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "jasmine-ts",
+    "build": "tsc --sourceMap",
+    "watch": "tsc --sourceMap --watch",
+    "clean": "rm -f ./lib/*",
+    "prepublishj": "yarn clean && yarn build"
+  },
+  "dependencies": {
+    "@types/prop-types": "^15.5.3",
+    "prop-types": "^15.6.2"
+  },
+  "devDependencies": {
+    "@types/enzyme": "^3.1.11",
+    "@types/jasmine": "^2.8.8",
+    "@types/react": "^16.4.14",
+    "@types/react-dom": "^16.0.7",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "jasmine": "^3.1.0",
+    "jasmine-enzyme": "^6.0.2",
+    "jsdom": "^11.11.0",
+    "react": "^16.5.1",
+    "react-dom": "^16.5.1",
+    "typescript": "^3.0.3"
+  },
+  "keywords": [
+    "react",
+    "reactjs",
+    "img",
+    "lazy load",
+    "progressive",
+    "medium",
+    "loadable"
+  ]
+}
