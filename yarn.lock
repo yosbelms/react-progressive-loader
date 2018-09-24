@@ -893,6 +893,13 @@ randexp@0.4.6:
     discontinuous-range "1.0.0"
     ret "~0.1.10"
 
+react-deco@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/react-deco/-/react-deco-0.7.0.tgz#429904968240bc85f3c6b232c27aefda00e9512d"
+  dependencies:
+    "@types/prop-types" "^15.5.3"
+    prop-types "^15.6.2"
+
 react-dom@^16.5.1:
   version "16.5.1"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.5.1.tgz#29d0c5a01ed3b6b4c14309aa91af6ec4eb4f292c"
