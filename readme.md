@@ -76,7 +76,7 @@ Progressively load images. This component makes a smooth animated transition in 
 Props:
 * `src`: The source of the content
 * `placeholderSrc`: The source of the image that is going to be showed while the content is loading
-* `bgColor`: The color of the backgroud that is going to be showed while the placeholder is loading
+* `bgColor`: The color of the background that is going to be showed while the placeholder is loading
 * `loadOnScreen`: Load the content only when the area it is going to be rendered is visible for the user
 
 _This component also accepts all the `img` properties (className, style, ...)_
