@@ -18,10 +18,12 @@ const imgStyle = {
   transition: 'opacity 1s linear'
 }
 
-const imgPlaceholderStyle = {
-  ...imgStyle,
-  filter: 'blur(50px)',
-  transform: 'scale(1)'
+const imgPlaceholderStyle = blurAmount => {
+  return {
+    ...imgStyle,
+    filter: `blur(${blurAmount})`,
+    transform: 'scale(1)'
+  };
 }
 
 const wrapperStyle = {
@@ -37,12 +39,14 @@ const backgroundStyle = {
 }
 
 const defaultBgColor = '#f6f6f6'
+const defaultBlurAmount = '50px'
 
 export function Img(props:  HTMLAttributes<any> & {
   src: string
   placeholderSrc?: string
   bgColor?: string
   loadOnScreen?: boolean
+  blurAmount?: number
 }) {
   const { src, placeholderSrc } = props
   const wrapperProps = { ...props }
@@ -52,6 +56,7 @@ export function Img(props:  HTMLAttributes<any> & {
   delete wrapperProps.loadOnScreen
 
   const bgColor = props.bgColor || defaultBgColor
+  const blurAmount = props.blurAmount || defaultBlurAmount
 
   return (
     <Bare
@@ -74,7 +79,7 @@ export function Img(props:  HTMLAttributes<any> & {
           <If test={placeholderSrc && cmp.state.placeholderLoaded} then={() =>
             <img key='placeholder'
               src={placeholderSrc}
-              style={{ ...imgPlaceholderStyle, opacity: cmp.state.loaded ? 0 : 1 }}
+              style={{ ...imgPlaceholderStyle(blurAmount), opacity: cmp.state.loaded ? 0 : 1 }}
             />
           } />
 
@@ -96,7 +101,8 @@ export function Img(props:  HTMLAttributes<any> & {
   src: PropsTypes.string.isRequired,
   placeholderSrc: PropsTypes.string,
   bgColor: PropsTypes.string,
-  loadOnScreen: PropsTypes.bool
+  loadOnScreen: PropsTypes.bool,
+  blurAmount: PropTypes.number
 }
 
 function constructor(cmp) {
