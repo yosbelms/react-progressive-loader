@@ -54,6 +54,7 @@ export function Img(props:  HTMLAttributes<any> & {
   delete wrapperProps.placeholderSrc
   delete wrapperProps.bgColor
   delete wrapperProps.loadOnScreen
+  delete wrapperProps.blurAmount
 
   const bgColor = props.bgColor || defaultBgColor
   const blurAmount = props.blurAmount || defaultBlurAmount
