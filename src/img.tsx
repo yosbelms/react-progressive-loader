@@ -103,7 +103,7 @@ export function Img(props:  HTMLAttributes<any> & {
   placeholderSrc: PropsTypes.string,
   bgColor: PropsTypes.string,
   loadOnScreen: PropsTypes.bool,
-  blurAmount: PropsTypes.number
+  blurAmount: PropsTypes.string
 }
 
 function constructor(cmp) {
