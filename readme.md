@@ -77,6 +77,7 @@ Props:
 * `src`: The source of the content
 * `placeholderSrc`: The source of the image that is going to be showed while the content is loading
 * `bgColor`: The color of the backgroud that is going to be showed while the placeholder is loading
+* `aspectRatio`: A static aspect ratio for image, placeholder, and background color. The aspect ratio provided must be calculated in the following way: `height / width`
 * `loadOnScreen`: Load the content only when the area it is going to be rendered is visible for the user
 
 _This component also accepts all the `img` properties (className, style, ...)_
