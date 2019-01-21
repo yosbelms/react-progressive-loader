@@ -1,4 +1,4 @@
-type ElementWithIntersection = Element & {
+export type ElementWithIntersection = HTMLElement & {
   onIntersection: () => void
 }
 
