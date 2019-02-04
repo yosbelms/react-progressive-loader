@@ -54,6 +54,7 @@ export function Img(props: HTMLAttributes<any> & {
   delete wrapperProps.src
   delete wrapperProps.placeholderSrc
   delete wrapperProps.bgColor
+  delete wrapperProps.aspectRatio
   delete wrapperProps.loadOnScreen
   delete wrapperProps.blurAmount
 
