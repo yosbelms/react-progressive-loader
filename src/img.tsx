@@ -41,10 +41,11 @@ const backgroundStyle = {
 const defaultBgColor = '#f6f6f6'
 const defaultBlurAmount = '50px'
 
-export function Img(props:  HTMLAttributes<any> & {
+export function Img(props: HTMLAttributes<any> & {
   src: string
   placeholderSrc?: string
   bgColor?: string
+  aspectRatio: number
   loadOnScreen?: boolean
   blurAmount?: number
 }) {
@@ -92,7 +93,13 @@ export function Img(props:  HTMLAttributes<any> & {
             }}
           />
 
-          <div key='preserver' style={{ paddingBottom: '66.6%' }} />
+          <div key='preserver' style={{
+            paddingBottom: (
+              getPreserverPaddingBottom(Number(props.aspectRatio)) ||
+              getPreserverPaddingBottom(Number(cmp.state.aspectRatio)) ||
+              getPreserverPaddingBottom(.5)
+            )
+          }} />
         </div>
       } />
   )
@@ -115,10 +122,20 @@ function constructor(cmp) {
 
 function beginImgLoad(cmp, props) {
   if (props.placeholderSrc) {
-    loadImg(props.placeholderSrc, () => cmp.setState({ placeholderLoaded: true }))
+    loadImg(props.placeholderSrc, (img: HTMLImageElement) => {
+      cmp.setState({
+        placeholderLoaded: true,
+        aspectRatio: getImageAspectRatio(img)
+      })
+    })
   }
 
-  loadImg(props.src, () => cmp.setState({ loaded: true }))
+  loadImg(props.src, (img: HTMLImageElement) => {
+    cmp.setState({
+      loaded: true,
+      aspectRatio: getImageAspectRatio(img)
+    })
+  })
 }
 
 function attachWrapperElRef(cmp, props, ref) {
@@ -142,8 +159,17 @@ function willUnmount(cmp) {
   cmp.observedElRef = null
 }
 
+function getImageAspectRatio(img: HTMLImageElement) {
+  return img.naturalHeight / img.naturalWidth
+}
+
+function getPreserverPaddingBottom(aspectRatio) {
+  const ar = Number(aspectRatio)
+  return isNaN(ar) ? 0 : aspectRatio * 100 + '%'
+}
+
 function loadImg(src, onLoad) {
   const img = new Image()
-  img.onload = () => onLoad(src)
+  img.onload = () => onLoad(img)
   img.src = src
 }
