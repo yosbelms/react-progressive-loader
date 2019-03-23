@@ -51,6 +51,7 @@ export function Img(props: HTMLAttributes<any> & {
   delete wrapperProps.placeholderSrc
   delete wrapperProps.bgColor
   delete wrapperProps.loadOnScreen
+  delete wrapperProps.aspectRatio
 
   const bgColor = props.bgColor || defaultBgColor
 
