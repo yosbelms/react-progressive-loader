@@ -39,19 +39,25 @@ const backgroundStyle = {
 const defaultBgColor = '#f6f6f6'
 
 export function Img(props: HTMLAttributes<any> & {
-  src: string
+  src?: string
+  srcSet?: string
+  sizes?: string 
+  alt?: string
   placeholderSrc?: string
   bgColor?: string
-  aspectRatio: number
+  aspectRatio?: number
   loadOnScreen?: boolean
 }) {
-  const { src, placeholderSrc } = props
+  const { src, srcSet, placeholderSrc, alt, sizes } = props
   const wrapperProps = { ...props }
   delete wrapperProps.src
+  delete wrapperProps.srcSet
+  delete wrapperProps.sizes
+  delete wrapperProps.alt
   delete wrapperProps.placeholderSrc
   delete wrapperProps.bgColor
-  delete wrapperProps.loadOnScreen
   delete wrapperProps.aspectRatio
+  delete wrapperProps.loadOnScreen
 
   const bgColor = props.bgColor || defaultBgColor
 
@@ -66,10 +72,13 @@ export function Img(props: HTMLAttributes<any> & {
           style={{ ...wrapperStyle, ...wrapperProps.style }}
           ref={(ref) => attachWrapperElRef(cmp, props, ref)}>
 
-          <If test={src && cmp.state.loaded} then={() =>
+          <If test={(src || srcSet) && cmp.state.loaded} then={() =>
             <img key='img'
               src={src}
+              srcSet={srcSet}
+              sizes={sizes}
               style={{ ...imgStyle, opacity: 1 }}
+              alt={alt}
             />
           } />
 
@@ -101,22 +110,26 @@ export function Img(props: HTMLAttributes<any> & {
 }
 
 (Img as any).propTypes = {
-  src: PropsTypes.string.isRequired,
+  src: PropsTypes.string,
+  srcSet: PropsTypes.string,
+  sizes: PropsTypes.string,
+  alt: PropsTypes.string,
   placeholderSrc: PropsTypes.string,
   bgColor: PropsTypes.string,
+  aspectRatio: PropsTypes.number,
   loadOnScreen: PropsTypes.bool
 }
 
-function constructor(cmp) {
+function constructor(cmp: any) {
   cmp.state = {
     placeholderLoaded: false,
     loaded: false
   }
 }
 
-function beginImgLoad(cmp, props) {
+function beginImgLoad(cmp: any, props: { [key: string]: any }) {
   if (props.placeholderSrc) {
-    loadImg(props.placeholderSrc, (img: HTMLImageElement) => {
+    loadImg(props.placeholderSrc, null, null, (img: HTMLImageElement) => {
       cmp.setState({
         placeholderLoaded: true,
         aspectRatio: getImageAspectRatio(img)
@@ -124,7 +137,7 @@ function beginImgLoad(cmp, props) {
     })
   }
 
-  loadImg(props.src, (img: HTMLImageElement) => {
+  loadImg(props.src, props.srcSet, props.sizes, (img: HTMLImageElement) => {
     cmp.setState({
       loaded: true,
       aspectRatio: getImageAspectRatio(img)
@@ -132,16 +145,16 @@ function beginImgLoad(cmp, props) {
   })
 }
 
-function attachWrapperElRef(cmp, props, ref) {
+function attachWrapperElRef(cmp: any, props: { [key: string]: any }, ref: HTMLDivElement) {
   if (ref) {
+    (ref as any).onIntersection = () => beginImgLoad(cmp, props)
     cmp.domRef = ref
-    ref.onIntersection = () => beginImgLoad(cmp, props)
   } else {
     cmp.domRef = null
   }
 }
 
-function didMount(cmp, props) {
+function didMount(cmp: any, props: { [key: string]: any }) {
   if (props.loadOnScreen) {
     observe(cmp.domRef)
   } else {
@@ -149,7 +162,7 @@ function didMount(cmp, props) {
   }
 }
 
-function willUnmount(cmp) {
+function willUnmount(cmp: any) {
   cmp.observedElRef = null
 }
 
@@ -157,13 +170,19 @@ function getImageAspectRatio(img: HTMLImageElement) {
   return img.naturalHeight / img.naturalWidth
 }
 
-function getPreserverPaddingBottom(aspectRatio) {
+function getPreserverPaddingBottom(aspectRatio: number) {
   const ar = Number(aspectRatio)
   return isNaN(ar) ? 0 : aspectRatio * 100 + '%'
 }
 
-function loadImg(src, onLoad) {
+function loadImg(src: string, srcSet: string, sizes: string, onLoad: (...args: any[]) => void) {
   const img = new Image()
   img.onload = () => onLoad(img)
   img.src = src
+  if (typeof srcSet === 'string') {
+    img.srcset = srcSet
+  }
+  if (typeof sizes === 'string') {
+    img.sizes = sizes
+  }
 }
