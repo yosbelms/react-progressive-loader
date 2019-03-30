@@ -76,11 +76,14 @@ Progressively load images. This component makes a smooth animated transition in 
 Props:
 * `src`: The source of the content
 * `placeholderSrc`: The source of the image that is going to be showed while the content is loading
+* `srcSet`: The source of the content (see: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-srcset)
+* `sizes`: A set of source sizes (see: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-sizes)
 * `bgColor`: The color of the backgroud that is going to be showed while the placeholder is loading
 * `aspectRatio`: A static aspect ratio for image, placeholder, and background color. The aspect ratio provided must be calculated in the following way: `height / width`
 * `loadOnScreen`: Load the content only when the area it is going to be rendered is visible for the user
+* `alt`: Alternative text (see: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-alt)
 
-_This component also accepts all the `img` properties (className, style, ...)_
+_Any other prop (not listed here) passed to this components will be passed down to the wrapper `div`_
 
 Basic usage
 
