@@ -12,8 +12,8 @@ const observedElStyle = {
 
 export function Defer(props: HTMLAttributes<any> & {
   render: any
-  renderPlaceholder: any
-  loadOnScreen: boolean
+  renderPlaceholder?: any
+  loadOnScreen?: boolean
 }) {
   const observedDivElProps = { ...{ style: observedElStyle }, ...props }
   delete observedDivElProps.render
