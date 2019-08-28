@@ -8,9 +8,13 @@ import { HTMLAttributes } from 'react';
 // https://code.fb.com/android/the-technology-behind-preview-photos/
 // https://medium.com/front-end-hacking/progressive-image-loading-and-intersectionobserver-d0359b5d90cd
 
+const rAF = typeof requestAnimationFrame === 'function' ? requestAnimationFrame : setTimeout
+const afterAF = (fn: any, aFNumber: number = 0) => {
+  rAF(() => aFNumber === 0 ? fn() : afterAF(fn, aFNumber - 1))
+}
+
 const imgStyle = {
   position: 'absolute' as 'absolute',
-  opacity: 0,
   top: '0',
   left: '0',
   width: '100%',
@@ -41,7 +45,7 @@ const defaultBgColor = '#f6f6f6'
 export function Img(props: HTMLAttributes<any> & {
   src?: string
   srcSet?: string
-  sizes?: string 
+  sizes?: string
   alt?: string
   placeholderSrc?: string
   bgColor?: string
@@ -72,12 +76,12 @@ export function Img(props: HTMLAttributes<any> & {
           style={{ ...wrapperStyle, ...wrapperProps.style }}
           ref={(ref) => attachWrapperElRef(cmp, props, ref)}>
 
-          <If test={(src || srcSet) && cmp.state.loaded} then={() =>
+          <If test={(src || srcSet) && cmp.state.imageLoaded} then={() =>
             <img key='img'
               src={src}
               srcSet={srcSet}
               sizes={sizes}
-              style={{ ...imgStyle, opacity: 1 }}
+              style={{ ...imgStyle, opacity: cmp.state.imageReady ? 1 : .1 }}
               alt={alt}
             />
           } />
@@ -85,7 +89,7 @@ export function Img(props: HTMLAttributes<any> & {
           <If test={placeholderSrc && cmp.state.placeholderLoaded} then={() =>
             <img key='placeholder'
               src={placeholderSrc}
-              style={{ ...imgPlaceholderStyle, opacity: cmp.state.loaded ? 0 : 1 }}
+              style={{ ...imgPlaceholderStyle, opacity: cmp.state.imageReady ? 0 : .99 }}
             />
           } />
 
@@ -93,7 +97,7 @@ export function Img(props: HTMLAttributes<any> & {
             style={{
               ...backgroundStyle,
               backgroundColor: bgColor,
-              opacity: (cmp.state.loaded || cmp.state.placeholderLoaded) ? 0 : 1
+              opacity: (cmp.state.imageReady || cmp.state.placeholderLoaded) ? 0 : .99
             }}
           />
 
@@ -123,7 +127,8 @@ export function Img(props: HTMLAttributes<any> & {
 function constructor(cmp: any) {
   cmp.state = {
     placeholderLoaded: false,
-    loaded: false
+    imageLoaded: false,
+    imageReady: false,
   }
 }
 
@@ -139,8 +144,15 @@ function beginImgLoad(cmp: any, props: { [key: string]: any }) {
 
   loadImg(props.src, props.srcSet, props.sizes, (img: HTMLImageElement) => {
     cmp.setState({
-      loaded: true,
-      aspectRatio: getImageAspectRatio(img)
+      imageLoaded: true,
+      aspectRatio: getImageAspectRatio(img),
+    }, () => {
+      // nothing fancy, just a trick
+      // we set imageReady to true after 5 timeframes,
+      // to let the browser to render big images
+      // and "try" guarantee smooth transition
+      // Anyway, this may not work for very big images
+      afterAF(() => cmp.setState({ imageReady: true }), 5)
     })
   })
 }
