@@ -41,10 +41,24 @@ Props:
 * `renderPlaceholder`: The content to render while the content is loading
 * `loadOnScreen`: Load the content only when the area it is going to be rendered is visible for the user
 
+If case the React component is `default-exported` in `./comp` module
+
 ```jsx
 <Defer
   render={() => import('./comp')}
   renderPlaceholder={() => <div>Loading...</div>}
+/>
+```
+
+If the component is not `default-exported`
+
+```jsx
+// './comp.jsx'
+export const MyComp = () => 'Loaded!'
+
+// './app.jsx'
+<Defer
+  render={() => import('./comp').then(({MyComp}) => <MyComp />)}
 />
 ```
 
