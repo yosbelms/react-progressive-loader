@@ -1,6 +1,6 @@
 {
   "name": "react-progressive-loader",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Utility to load images and React components progressively, and get code splitting for free",
   "repository": "https://github.com/yosbelms/react-progressive-loader.git",
   "main": "lib/index.js",
