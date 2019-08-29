@@ -86,11 +86,9 @@ function loadComponent(cmp, props) {
       let cmpToRender
 
       if (mod) {
-        if (React.isValidElement(mod)) {
+        if (typeof mod === 'function' || React.isValidElement(mod)) {
           cmpToRender = mod
-        } else if (typeof mod === 'function') {
-          cmpToRender = mod
-        } else if (typeof mod.default === 'function') {
+        } else if (typeof mod.default === 'function' || React.isValidElement(mod.default)) {
           cmpToRender = mod.default
         }
       }
