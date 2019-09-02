@@ -2,7 +2,7 @@ import * as React from 'react'
 import * as PropsTypes from 'prop-types'
 import { Bare, If } from 'react-deco'
 import { observe } from './observer'
-import { HTMLAttributes } from 'react';
+import { HTMLAttributes } from 'react'
 
 // https://jmperezperez.com/medium-image-progressive-loading-placeholder/
 // https://code.fb.com/android/the-technology-behind-preview-photos/
@@ -34,7 +34,8 @@ const wrapperStyle = {
 }
 
 const backgroundStyle = {
-  ...imgStyle,
+  transition: 'opacity 1s linear',
+  width: '100%',
   height: '100%',
   backgroundSize: 'cover',
   backgroundRepeat: 'no-repeat'
@@ -97,17 +98,15 @@ export function Img(props: HTMLAttributes<any> & {
             style={{
               ...backgroundStyle,
               backgroundColor: bgColor,
-              opacity: (cmp.state.imageReady || cmp.state.placeholderLoaded) ? 0 : .99
+              opacity: (cmp.state.imageReady || cmp.state.placeholderLoaded) ? 0 : .99,
+              paddingBottom: (
+                getPreserverPaddingBottom(Number(props.aspectRatio)) ||
+                getPreserverPaddingBottom(Number(cmp.state.aspectRatio)) ||
+                getPreserverPaddingBottom(.5)
+              )
             }}
           />
 
-          <div key='preserver' style={{
-            paddingBottom: (
-              getPreserverPaddingBottom(Number(props.aspectRatio)) ||
-              getPreserverPaddingBottom(Number(cmp.state.aspectRatio)) ||
-              getPreserverPaddingBottom(.5)
-            )
-          }} />
         </div>
       } />
   )
