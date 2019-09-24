@@ -1,6 +1,6 @@
 {
   "name": "react-progressive-loader",
-  "version": "0.3.4",
+  "version": "0.4.0",
   "description": "Utility to load images and React components progressively, and get code splitting for free",
   "repository": "https://github.com/yosbelms/react-progressive-loader.git",
   "main": "lib/index.js",
@@ -17,9 +17,9 @@
     "react-deco": "^0.7.0"
   },
   "devDependencies": {
-    "@types/prop-types": "^15.5.3",
     "@types/enzyme": "^3.1.11",
     "@types/jasmine": "^2.8.8",
+    "@types/prop-types": "^15.5.3",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",
     "enzyme": "^3.3.0",
