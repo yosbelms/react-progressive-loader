@@ -13,24 +13,26 @@ const afterAF = (fn: any, aFNumber: number = 0) => {
   rAF(() => aFNumber === 0 ? fn() : afterAF(fn, aFNumber - 1))
 }
 
+const wrapperStyle = {
+  position: 'relative' as 'relative',
+  overflow: 'hidden'
+}
+
 const imgStyle = {
   position: 'absolute' as 'absolute',
   top: '0',
   left: '0',
   width: '100%',
   height: 'auto',
-  transition: 'opacity 1s linear'
+  transition: 'opacity 1s linear',
+  zIndex: 3,
 }
 
 const imgPlaceholderStyle = {
   ...imgStyle,
   filter: 'blur(50px)',
-  transform: 'scale(1)'
-}
-
-const wrapperStyle = {
-  position: 'relative' as 'relative',
-  overflow: 'hidden'
+  transform: 'scale(1)',
+  zIndex: 2,
 }
 
 const backgroundStyle = {
@@ -38,7 +40,8 @@ const backgroundStyle = {
   width: '100%',
   height: '100%',
   backgroundSize: 'cover',
-  backgroundRepeat: 'no-repeat'
+  backgroundRepeat: 'no-repeat',
+  zIndex: 1,
 }
 
 const defaultBgColor = '#f6f6f6'
