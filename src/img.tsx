@@ -137,7 +137,7 @@ function constructor(cmp: any) {
 function beginImgLoad(cmp: any, props: { [key: string]: any }) {
   if (props.placeholderSrc) {
     loadImg(props.placeholderSrc, null, null, (img: HTMLImageElement) => {
-      cmp.setState({
+      cmp.mounted && cmp.setState({
         placeholderLoaded: true,
         aspectRatio: getImageAspectRatio(img)
       })
@@ -145,7 +145,7 @@ function beginImgLoad(cmp: any, props: { [key: string]: any }) {
   }
 
   loadImg(props.src, props.srcSet, props.sizes, (img: HTMLImageElement) => {
-    cmp.setState({
+    cmp.mounted && cmp.setState({
       imageLoaded: true,
       aspectRatio: getImageAspectRatio(img),
     }, () => {
@@ -169,6 +169,7 @@ function attachWrapperElRef(cmp: any, props: { [key: string]: any }, ref: HTMLDi
 }
 
 function didMount(cmp: any, props: { [key: string]: any }) {
+  cmp.mounted = true
   if (props.loadOnScreen) {
     observe(cmp.domRef)
   } else {
@@ -177,6 +178,7 @@ function didMount(cmp: any, props: { [key: string]: any }) {
 }
 
 function willUnmount(cmp: any) {
+  cmp.mounted = false
   cmp.observedElRef = null
 }
 
