@@ -89,6 +89,20 @@ describe('Defer', () => {
       expect(screen.getByTestId('deferred')).toBeInTheDocument();
     });
 
+    it('should support render that returns a promise with ReactComponent', async () => {
+      let promiseResolver;
+      const PromisedDeferredComp = () => new Promise(resolve => promiseResolver = resolve);
+      const screen = render(<Defer render={PromisedDeferredComp} renderPlaceholder={PlaceholderComp} />);
+
+      expect(screen.getByTestId('placeholder')).toBeInTheDocument();
+
+      promiseResolver(DeferredComp);
+
+      await waitFor(() => screen.getByTestId('deferred'));
+
+      expect(screen.getByTestId('deferred')).toBeInTheDocument();
+    });
+
     it('should support render that returns a promise with a default prop', async () => {
       let promiseResolver;
       const PromisedDeferredComp = () => new Promise(resolve => promiseResolver = resolve);
