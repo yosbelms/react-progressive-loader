@@ -96,7 +96,7 @@ describe('Defer', () => {
 
       expect(screen.getByTestId('placeholder')).toBeInTheDocument();
 
-      promiseResolver({ default: DeferredComp });
+      promiseResolver({ default: DeferredComp() });
 
       await waitFor(() => screen.getByTestId('deferred'));
 
